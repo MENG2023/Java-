@@ -1,0 +1,216 @@
+2.方法概念及使用
+2.1什么是方法
+方法是一个代码片段,类似于C语言中的"函数"
+1.2 方法定义
+方法语法格式
+
+//方法定义
+修饰符 返回值类型 方法名称([参数类型 形参...]) {
+   方法体代码;
+ [return 返回值];
+}
+示例一:实现一个函数,检测一个年份是否为闰年
+  public class Method{
+   //方法定义
+  public static boolean isLeapYear(int year) {
+  if((year%4==0 && year%100!=0 || year % 400 == 0){
+    return true;
+  } else {
+      return false;
+    }
+ }
+}
+示例二:实现两个整数相加的方法
+  public class Method{
+  //方法的定义
+   public static int add(int x,int y) {
+      return x+y;
+  }
+}
+
+注意事项
+1.修饰符:现阶段直接使用public static 固定搭配
+2.返回值类型:如果方法有返回值,返回值类型必须要与返回实体类型一致,如果没有返回值,必须写成void
+3.方法名字:采用小驼峰命名
+4.参数列表:如果方法没有参数,()中什么都不写,如果有参数,需指定参数类型,多个参数之间使用逗号隔开
+5.方法体:方法内部要执行的语句
+6.在java当中,方法必须写在类当中
+7.在java当中,方法不能嵌套定义
+8.在java当中,没有方法说明一说
+
+1.3方法调用的执行过程
+[方法调用的过程]
+调用方法->传递参数->找到方法地址->执行被调方法的方法体->被调方法结束返回->回到主调方法继续往下执行
+
+[注意事项]
+.定义方法的时候,不会执行方法的代码.只有调用的时候才会执行
+.一个方法可以被多次调用
+代码示例1:计算两个整数相加
+
+   public class Method{
+     public static void main(String[] args) {
+          int a = 10;
+           int b = 20;
+       System.out.println("第一次调用方法之前");
+         int ret = add(a,b);
+   System.out.println("第一次调用方法之后");
+       System.out.println("ret="+ret);
+      System.out.println("第二次调用方法之前");
+        ret = add(30,50);
+     System.out.println("第二次调用方法之后");
+     System.out.println("ret="+ret);
+  }
+
+public static int add(int x,int y) {
+ System.out.println("调用方法中 x="+x+y"y="+y);
+ return x+y;
+  }
+}
+
+
+//执行结果
+一次调用方法之前
+调用方法中 x = 10 y =20
+第一次调用方法之后
+ret = 30
+第二次调用方法之前
+调用方法中 x= 30 y = 50
+第二次调用方法之后
+ret = 80
+代码示例:计算1!+2!+3!+4!+5!
+public class TestMethod{
+ public static void main(string[] args) {
+       int sum = 0;
+     for(int i = 1;i<=5;i++) {
+       sum+=fac(i);
+    }
+   System.out.println("sum="+sum);
+  }
+
+public static int fac(int n) {
+  System.out.println("计算n的阶乘中n!="+n);
+    int result = 1;
+     for(int i = 1;i<=n;i++) {
+    result*=i;
+   }
+  return result;
+  }
+}
+
+//执行结果
+计算n的阶乘中n! = 1;
+计算n的阶乘中n! = 2;
+计算n的阶乘中n! = 3;
+计算n的阶乘中n! = 4;
+计算n的阶乘中n! = 5;
+sum = 153
+使用方法,避免使用二重循环,让代码更简单清晰
+
+1.4 实参和形参的关系(重要)
+Java中方法的形参就相当于sum函数中的自变量n,用来接受sum函数在调用时传递的值的值,形参的名字可以随意取,对方法都没有任何影响,
+形参只是方法在定义时需要借助的一个变量,用来保存方法在调用时传递过来的值
+public static int getSum(int N) { //N是形参
+  return (1+N)*N/2;
+ }
+
+
+getSum(10);//10是实参,在方法调用时,形参N用来保存10
+getSum(100);//100是实参,在方法调用时,形参N用来保存100
+
+再比如:
+public static int add(int a,int b) {
+   return a+b;
+}
+ add(2,3); //2和3是实参,在调用时传给形参a和b
+
+注意:在java 中,实参的值永远都是拷贝到形参中,形参和实参本质是两个实体
+代码示例:交换两个整形变量
+ public class TestMethod {
+  public static void main(String[] args) {
+    int a = 10;
+  int b = 20;
+  swap(a,b);
+ System.out.println("min:a="+a+b="+b);
+ }
+
+ public static void swap(int x,int y) {
+ int tmp = x;
+  x = y;
+  y = tmp;
+ System.out.println("swap:x="+x+"y="+y);
+  }
+}
+
+//运行结果
+swap: x =20 y = 10
+main: a = 10 b = 20
+
+可以看到,在swap 函数交换之后,形参x和y的值发生了改变,但是main方法中a和b还是交换之前的值,即没有交换成功
+
+原因分析
+实参a和b是main方法中的两个变量,其空间在main方法的栈(一块特殊的内存空间)中,而形参x和y是swap方法中的
+两个变量,x和y的空间在swap方法运行时的栈中,因此:实参a和b与形参x和y是两个没有任何关联性的变量,
+在swap方法调用时,只是将实参a和b中的值拷贝了一份传递给了形参x和y,因此对形参x和y操作不会对实参a和b产生任何影响
+
+注意:对于基础类型来说,形参相当于实参的拷贝,即传值调用
+    int a =10;
+  int b = 20;
+
+   int x = a;
+   int y = b;
+  
+   int tmp = x;
+    x = y;
+    y = tmp;
+可以看到,对x和y的修改,不影响a和b
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
